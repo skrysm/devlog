@@ -7,3 +7,4 @@ Please apply the changes directly to the document.
 Please don't add unnecessary new blank lines and keep numbered lists as "1." for every item.
 Keep contractions.
 Please don't shorten " - " within sentences.
+Please also fact-check the article but only mention facts that are wrong. Do not mention facts that are correct.
