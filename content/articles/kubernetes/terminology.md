@@ -17,6 +17,9 @@ Controller
 EndpointSlice
 : An improved resource type to store [Kubernetes endpoints](resources/services.md#endpoints). Can usually be used as synonym for "endpoint".
 
+Ephemeral
+: Short-lived and deliberately non-persistent by design. Opposite of *persistent*. For example, an ephemeral volume only exists as long as the Pod it belongs to.
+
 etcd
 : The default storage service used to store Kubernetes objects.
 
@@ -25,6 +28,9 @@ Kubelet
 
 Lease
 : A resource type used in [leader election](leader-election.md).
+
+Persistent
+: Used as opposite of *ephemeral*. For example, a persistent volume is *not* bound the lifetime of the Pod it belongs to.
 
 Pod
 : A grouping of one or more containers. See [Pods](resources/pods.md) for more details.

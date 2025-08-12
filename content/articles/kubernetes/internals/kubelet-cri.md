@@ -4,6 +4,7 @@ description: An overview of Kubelets, the CRI, the Container Runtime, and the Ku
 date: 2025-08-08
 topics:
 - kubernetes
+- containers
 ---
 
 When a [Pod](../resources/pods.md) is newly created in a cluster, Kubernetes uses the following pieces to start/run the Pod and its containers:

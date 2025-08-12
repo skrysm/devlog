@@ -4,6 +4,7 @@ description: Overview of Pods in Kubernetes
 date: 2025-07-22
 topics:
 - kubernetes
+- containers
 ---
 
 **Pods** are a [built-in resource type](overview.md) in Kubernetes. They are **the foundation** of all applications deployed in Kubernetes.
