@@ -75,34 +75,6 @@ In this minimal example, they only differ in their `kind`.
 
 Unlike ReplicaSets, however, you *can* change the Pod template (for example, change the container image version). In this case, Kubernetes will **create a new ReplicaSet and delete the old one**.
 
-## Commands
-
-List all existing Deployments:
-
-```sh
-kubectl get deployments            # for the current namespace
-kubectl get deploy                 # same; abbreviated name
-kubectl get deploy -n <namespace>  # for a different namespace
-kubectl get deploy -A              # for all namespaces
-```
-
-This will print something like:
-
-```
-NAME    READY   UP-TO-DATE   AVAILABLE   AGE
-nginx   3/3     3            3           3m16s
-```
-
-Similar to ReplicaSets, the Pods of a Deployment get two random "hashes" appended to their name - one for the Deployment and one for the ReplicaSet:
-
-```sh
-> kubectl get pods
-NAME                    READY   STATUS    RESTARTS   AGE
-nginx-5cbcc95d7-cqrzz   1/1     Running   0          5m3s
-nginx-5cbcc95d7-mp9kx   1/1     Running   0          5m3s
-nginx-5cbcc95d7-rnkx6   1/1     Running   0          5m3s
-```
-
 ## Rollouts and Rollbacks
 
 Deployments extend ReplicaSets with the concepts of **rollouts**.
@@ -198,3 +170,44 @@ Sources:
 
 * [Official Documentation: Updating a Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#updating-a-deployment)
 * [Official Documentation: Rollover](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rollover-aka-multiple-updates-in-flight)
+
+## Commands
+
+List all existing Deployments:
+
+```sh
+kubectl get deployments            # for the current namespace
+kubectl get deploy                 # same; abbreviated name
+kubectl get deploy -n <namespace>  # for a different namespace
+kubectl get deploy -A              # for all namespaces
+```
+
+This will print something like:
+
+```
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   3/3     3            3           3m16s
+```
+
+Similar to ReplicaSets, the Pods of a Deployment get two random "hashes" appended to their name - one for the Deployment and one for the ReplicaSet:
+
+```sh
+> kubectl get pods
+NAME                    READY   STATUS    RESTARTS   AGE
+nginx-5cbcc95d7-cqrzz   1/1     Running   0          5m3s
+nginx-5cbcc95d7-mp9kx   1/1     Running   0          5m3s
+nginx-5cbcc95d7-rnkx6   1/1     Running   0          5m3s
+```
+
+Restart a deployment:
+
+```sh
+kubectl rollout restart deployment <deployment-name>
+```
+
+Rollback to previous rollout:
+
+```sh
+kubectl rollout undo deployment <deployment-name>
+kubectl rollout undo deployment <deployment-name> --to-revision=<revision>
+```

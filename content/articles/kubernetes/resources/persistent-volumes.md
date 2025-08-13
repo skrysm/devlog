@@ -19,7 +19,7 @@ See also:
 
 ## Dynamically Provisioned Volumes {#dynamical-pv}
 
-In most cases, you will dynamically provision a volume:
+In most cases, you will **dynamically provision** a volume:
 
 ```yaml
 apiVersion: v1
@@ -35,6 +35,18 @@ spec:
 ```
 
 This will give you a volume of 100 MB of space - anywhere.
+
+"Dynamically provisioned" means that the PersistentVolume for the claim is created automatically. This only happens if there is no existing, available PV in the cluster that matches the claim.
+
+> [!NOTE]
+> Whether the PersistentVolume for a PersistentVolumeClaim is provisioned *immediately*, is defined by the "volume binding mode" of the storage class (see [below](#storage-classes)).
+>
+> It can be:
+>
+> * `Immediate` - provisions the volume immediately.
+> * `WaitForFirstConsumer` - provisions the volume when the first Pod is created that uses the claim.
+>
+> See also: [Official Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/#volume-binding-mode)
 
 ### How to interpret the spec
 
@@ -52,7 +64,7 @@ Note also that **you'll always need to specify**:
 > [!NOTE]
 > Even if you want to **claim an already existing PersistentVolume** just by name (`.spec.volumeName`), you still need to specify these two values.
 
-### Storage Classes
+### Storage Classes {#storage-classes}
 
 All PersistentVolumeClaims require a **storage class**. If you don't specify one (via `.spec.storageClassName`), the **default storage class** will be used.
 
@@ -82,7 +94,9 @@ kubectl get pv <persistent-volume-name> -o yaml
 ```
 
 > [!TIP]
-> You can also [**create custom storage classes**](#custom-storage-class), if the existing ones don't meet your requirements; for example, if the default [reclaim policy](#reclaim-policy) of the existing storage class is not what you want.
+> You can also **create custom storage classes**, if the existing ones don't meet your requirements; for example, if the default [reclaim policy](#reclaim-policy) of the existing storage class is not what you want. See the official documentation for more details.
+
+See also: [Official Documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/)
 
 ### Access Modes
 
@@ -98,29 +112,6 @@ Kubernetes will only dynamically provision PersistentVolumes if the storage clas
 *Side note:* In a PVC, you can specify **more than one access mode**. In this case, this claim will match any volume that supports *all* of the requested access modes. However, you will probably never need this.
 
 See also: [Official Documentation](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes)
-
-### Volume Binding
-
-A fully provisioned PersistentVolume can be **available**, **bound**, or **released**.
-
-A newly provisioned PersistentVolume starts in the state **"available"**.
-
-When a PersistentVolume is claimed by a PersistentVolumeClaim, it changes its state from **"available" to "bound"**.
-
-When the PersistentVolumeClaim of a bound PersistentVolume is deleted, the PersistentVolume changes its state from **"bound" to "released"** (if its [reclaim policy](#reclaim-policy) is set to "Retain").
-
-> [!NOTE]
-> The states **"available" and "released" are different**. An available volume is supposed to be empty, while a released volume is usually not empty.
->
-> Because of this, PersistentVolumeClaim will *not* claim volumes in state "released".
-
-The relationship between a PersistentVolume and a PersistentVolumeClaim is a 1-to-1 relationship; i.e. one claim can only bind one volume and one volume can only be bound by one claim.
-
-**Once a PersistentVolume is bound to a PersistentVolumeClaim, this binding is permanent** - until the PersistentVolumeClaim is deleted. This way, when a Pod is rescheduled/recreated, it will get the exact same volume - because it uses the same PersistentVolumeClaim.
-
-Available volumes can freely be bound to any claim they fit. For example, if there is a claim for a 100 MB volume and there is an available 150 MB volume in the cluster, the claim can be bound to this volume.
-
-Normally, you won't see volumes in the "available" state because they need to be manually provisioned by the cluster admin. You'll also normally won't see volumes in the "released" state because dynamically provisioned volumes usually use "Delete" as reclaim policy.
 
 ### Using PVCs in Pods {#using-in-pods}
 
@@ -220,9 +211,32 @@ There are couple of notes here:
 After you've created the PersistentVolumeClaim, you can simply [use it in Pods](#using-in-pods) like any PVC.
 
 > [!TIP]
-> If you don't mind the lesser separation of concerns, you *may* instead want to use one of the `.spec.volumes` fields in the Pod spec directly for this. This supports the same storage backends (see below) as PersistentVolumes (except for `local`).
+> If you don't mind the lesser separation of concerns, you *may* instead want to use one of the `.spec.volumes` fields in the Pod spec directly for this. This supports the same storage backends (see [below](#storage-backends)) as PersistentVolumes (except for `local`).
 
-## Storage Backends for Volumes
+### Volume Binding
+
+A fully provisioned PersistentVolume can be **available**, **bound**, or **released**.
+
+A newly provisioned PersistentVolume starts in the state **"available"**.
+
+When a PersistentVolume is claimed by a PersistentVolumeClaim, it changes its state from **"available" to "bound"**.
+
+When the PersistentVolumeClaim of a bound PersistentVolume is deleted, the PersistentVolume changes its state from **"bound" to "released"** (if its [reclaim policy](#reclaim-policy) is set to "Retain").
+
+> [!NOTE]
+> The states **"available" and "released" are different**. An available volume is supposed to be empty, while a released volume is usually not empty.
+>
+> Because of this, PersistentVolumeClaim will *not* claim volumes in state "released".
+
+The relationship between a PersistentVolume and a PersistentVolumeClaim is a 1-to-1 relationship; i.e. one claim can only bind one volume and one volume can only be bound by one claim.
+
+**Once a PersistentVolume is bound to a PersistentVolumeClaim, this binding is permanent** - until the PersistentVolumeClaim is deleted. This way, when a Pod is rescheduled/recreated, it will get the exact same volume - because it uses the same PersistentVolumeClaim.
+
+Available volumes can freely be bound to any claim they fit. For example, if there is a claim for a 100 MB volume and there is an available 150 MB volume in the cluster, the claim can be bound to this volume.
+
+Normally, you won't see volumes in the "available" state because they need to be manually provisioned by the cluster admin. You'll also normally won't see volumes in the "released" state because dynamically provisioned volumes usually use "Delete" as reclaim policy.
+
+## Storage Backends for Volumes {#storage-backends}
 
 Above we've seen a PersistentVolume that maps to a local path on the node. However, PersistentVolumes also support other storage backends - depending on which field you use:
 
@@ -377,13 +391,13 @@ NAME                   PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE
 local-path (default)   rancher.io/local-path   Delete          WaitForFirstConsumer   false                  47d
 ```
 
-To change the reclaim policy for a dynamically (or manually) provisioned PV, you need to edit the PV resource.
+To change the reclaim policy for a dynamically (or manually) provisioned PV, you need to edit the PV resource (see [below](#change-reclaim-policy-on-pv)).
 
-To change the reclaim policy for a PVC, you need to use (and create) another storage class.
+To change the reclaim policy for a PVC, you need to use (and create) another storage class. See the [official documentation on storage classes](https://kubernetes.io/docs/concepts/storage/storage-classes/) for more details.
 
 See also: [Official Documentation](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reclaiming)
 
-### Changing the Reclaim Policy on an Existing PV
+### Changing the Reclaim Policy on an Existing PV {#change-reclaim-policy-on-pv}
 
 To change the reclaim policy on an existing volume, use:
 
@@ -404,4 +418,29 @@ spec:
   persistentVolumeReclaimPolicy: Retain  # or Delete
 ```
 
-## Create Custom StorageClass {#custom-storage-class}
+## Commands
+
+List all existing PersistentVolumes:
+
+```sh
+kubectl get persistentvolumes  # for the current namespace
+kubectl get pv                 # same; abbreviated name
+kubectl get pv -n <namespace>  # for a different namespace
+kubectl get pv -A              # for all namespaces
+```
+
+List all existing PersistentVolumesClaims:
+
+```sh
+kubectl get persistentvolumeclaims  # for the current namespace
+kubectl get pvc                     # same; abbreviated name
+kubectl get pvc -n <namespace>      # for a different namespace
+kubectl get pvc -A                  # for all namespaces
+```
+
+List all existing storage classes:
+
+```sh
+kubectl get storageclasses
+kubectl get sc
+```

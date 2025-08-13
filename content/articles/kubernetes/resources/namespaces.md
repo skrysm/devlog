@@ -8,7 +8,7 @@ topics:
 
 **Namespaces** are a [built-in resource type](overview.md) in Kubernetes. They provide a mechanism to **group resources** within a cluster. You typically group resources that belong to the same application into a Namespace.
 
-All Kubernetes resources lives within a Namespace.
+Many ([but not all](#without-namespace)) Kubernetes resources lives within a Namespace.
 
 > [!TIP]
 > While it's possible to put all resources in the default Namespace (see [below](#initial-namespaces)), it's not recommended - because you would end up with lots and lots of resources in that Namespace and that makes it harder to understand the applications running in the cluster.
@@ -82,3 +82,18 @@ There are 4 initial Namespaces:
 The `default` Namespace just exists so that you can deploy Namespaces without the need to first create a Namespace.
 
 The other 3 Namespaces are system Namespaces that contain Pods/resources required by Kubernetes itself.
+
+## Resources without Namespaces {#without-namespace}
+
+Most Kubernetes resources belong to a namespace - but not all of them.
+
+For example:
+
+* **Namespaced** - Pods, Deployments, PersistentVolumes
+* **Not namespaced** - Nodes, Namespaces, StorageClasses, CsiDrivers
+
+Whether a resource type is namespaced or not (see `NAMESPACED` column):
+
+```sh
+kubectl api-resources
+```

@@ -35,7 +35,7 @@ kubectl apply -f <file>
 > [!TIP]
 > Many people create an `alias k=kubectl` for their machine so that they can say `k get pods` instead of `kubectl get pods`.
 
-## Connecting to a Cluster
+## Connecting to a Cluster {#kube-config}
 
 Which Kubernetes cluster `kubectl` connects to is define in the **kubeconfig file**.
 

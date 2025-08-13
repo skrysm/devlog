@@ -6,18 +6,24 @@ topics:
 - kubernetes
 ---
 
-Kubernetes is primarily based on resources (Pods, Deployments, Services, ...) - and each resource is usually defined as a YAML file:
+Kubernetes is built around resources, like Pods, Deployments, Services, etc.
+
+## Overview
+
+Most of the time, you define resources as YAML files:
 
 ```yaml
-apiVersion: <resource_group/version>
-kind: <resource_type>
+apiVersion: v1
+kind: Pod  # resource type
 metadata:
-  name: <resource_name>
-spec:
-  # resource specification goes here
+  name: nginx  # resource name
+spec:  # resource specification
+  containers:
+    - name: nginx
+      image: nginx:1.29.0
 ```
 
-Resources are then created or updated with [`kubectl`](../kubectl.md):
+You then created or updated the resource in your cluster with [`kubectl`](../kubectl.md):
 
 ```sh
 kubectl apply -f <resource-file>
@@ -29,7 +35,7 @@ Resources can also be deleted this way:
 kubectl delete -f <resource-file>
 ```
 
-> [!TIP]
+> [!NOTE]
 > Resources can be created both via a yaml file (using `kubectl apply`) and via the command line (using `kubectl create`). It is, however, recommended to use yaml files so that they can be versioned in Git.
 
 To get the YAML definition of an existing resource:
@@ -64,6 +70,13 @@ kubectl get namespaces
 kubectl get pods
 ```
 
+To get a list of all resource types in your cluster:
+
+```sh
+kubectl api-resources                                     # unsorted
+kubectl api-resources | (head -n 1 && tail -n +2 | sort)  # sorted
+```
+
 > [!NOTE]
 > Resource **names must be unique** (within their [namespace](namespaces.md)). See [Object Names and IDs](https://kubernetes.io/docs/concepts/overview/working-with-objects/names/) for more details.
 >
@@ -75,21 +88,17 @@ The Kubernetes documentation uses capitalized names for resources, e.g. "Pod" in
 
 ## Resource Files
 
-Resources files in Kubernetes are YAML files like this:
+Most of the time, resources in Kubernetes are defined via YAML files - like this:
 
 ```yaml
 apiVersion: v1
-kind: Service
+kind: Pod
 metadata:
-  name: echo-server-clusterip
+  name: nginx
 spec:
-  type: ClusterIP
-  selector:
-    app: echo-server
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 5678
+  containers:
+    - name: nginx
+      image: nginx:1.29.0
 ```
 
 > [!TIP]
