@@ -1,6 +1,7 @@
 {
 	"cSpell.language": "en",
 	"cSpell.words": [
+		"AXFR",
 		"baseof",
 		"blittable",
 		"blockquotes",
@@ -22,6 +23,7 @@
 		"hostnames",
 		"HSTS",
 		"hyperv",
+		"IXFR",
 		"Krysmanski",
 		"Linq",
 		"manski",
@@ -31,6 +33,7 @@
 		"pagefind",
 		"paginators",
 		"parameterless",
+		"phonebook",
 		"routable",
 		"RSRP",
 		"shortcode",
