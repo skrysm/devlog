@@ -24,6 +24,7 @@ I've created several articles that teach you the basics of Kubernetes. I recomme
 1. [](resources/services-loadbalancer.md) - builds on top of NodePorts
 1. [](resources/external-services.md)
 1. [](resources/persistent-volumes.md)
+1. [](resources/stateful-sets.md)
 1. [](resources/jobs.md)
 1. [](resources/cronjobs.md) - builds on top of Jobs
 1. [](taints.md)

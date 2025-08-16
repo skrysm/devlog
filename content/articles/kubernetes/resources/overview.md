@@ -124,6 +124,7 @@ Kubernetes provides the following built-in resources (ordered from basic to adva
     * [External Services](external-services.md.md)
 * **Storage:**
   * [PersistentVolumes and PersistentVolumeClaims](persistent-volumes.md)
+  * [Ephemeral Volumes](pods-ephemeral-volumes.md)
 * **Jobs:**
   * [Jobs](jobs.md)
   * [CronJobs](cronjobs.md) - builds on top of Jobs
