@@ -8,8 +8,15 @@ date: 2025-08-18
 
 The output of `dig` (Domain Information Groper) can appear cryptic if you're not familiar with DNS. This article breaks down each part of the output to help you understand what it means.
 
-> [!TIP]
-> On Debian/Ubuntu, install the `dnsutils` package to get the `dig` command.
+## Installation
+
+On **Debian/Ubuntu**, install the `dnsutils` package to get the `dig` command.
+
+On **Windows**, you can download `dig` as part of the bind9 package:
+
+<https://ftp.isc.org/isc/bind9/9.17.15/BIND9.17.15.x64.zip>
+
+Note, however, that the bind9 project [dropped Windows support](https://ftp.isc.org/isc/bind9/9.17.16/doc/arm/html/notes.html#removed-features) with version 9.17.16.
 
 ## Example Output
 
