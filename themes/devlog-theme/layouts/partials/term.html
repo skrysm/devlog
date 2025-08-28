@@ -1,11 +1,13 @@
 <a class="term" href="{{ partial "permalink-rel.html" .Term }}">
   {{- if (.Term.Params.brand | default false) -}}
-    {{- /* Use brand icon instead of tag icon. */ -}}
+    {{- /* Use brand icon instead of tag icon.
+           See: https://fontawesome.com/search?ip=brands&ic=brands&o=r
+    */ -}}
     {{- if eq .Term.Params.brand true -}}
-      {{- /* Use term name (but not its title) as brand name. */ -}}
+      {{- /* Defined as "brand: true" -> Use term name (but not its title) as brand name. */ -}}
       <i class="tag-icon fa-brands fa-{{ lower .Term.Name }}"></i>
     {{- else -}}
-      {{- /* Use value of "brand" frontmatter as brand name. */ -}}
+      {{- /* Defined as "brand: name" -> Use the value as brand name. */ -}}
       <i class="tag-icon fa-brands fa-{{ .Term.Params.brand }}"></i>
     {{- end -}}
   {{- else -}}
