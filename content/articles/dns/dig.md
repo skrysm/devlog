@@ -76,7 +76,7 @@ The output format is similar to a [zone file](zone-files.md), where lines starti
 
 * **Dig version:** For example, `9.18.30-0ubuntu0.24.04.2-Ubuntu`.
 * **Command:** The domain you queried, here `example.com`.
-* **Global options:** Any extra flags you passed (e.g., `+trace`).
+* **Global options:** Any [extra flags](#options) you passed (e.g., `+trace`).
 
 ### 2. Header
 
@@ -135,3 +135,43 @@ Each section lists its [resource records](resource-records.md) in a readable for
 * **SERVER:** The DNS server that replied, including port (`#53`) and protocol (`UDP`).
 * **WHEN:** Date and time of the query.
 * **MSG SIZE rcvd:** Size of the reply in bytes.
+
+## Useful Options {#options}
+
+There are a few useful options:
+
+* `+short` - only prints the IP address:
+
+  ```sh
+  $ dig wikipedia.org +short
+  185.15.59.224
+  ```
+
+* `+trace` - show exactly how responded with what:
+
+  ```sh
+  $ dig wikipedia.org +trace
+
+  ; <<>> DiG 9.18.33-1~deb12u2-Raspbian <<>> wikipedia.org +trace
+  ;; global options: +cmd
+  .                       41959   IN      NS      m.root-servers.net.
+  .                       41959   IN      NS      d.root-servers.net.
+  .                       41959   IN      NS      f.root-servers.net.
+  ...
+  ;; Received 1097 bytes from 192.168.0.1#53(192.168.0.1) in 20 ms
+
+  org.                    172800  IN      NS      d0.org.afilias-nst.org.
+  org.                    172800  IN      NS      b0.org.afilias-nst.org.
+  org.                    172800  IN      NS      b2.org.afilias-nst.org.
+  ...
+  ;; Received 782 bytes from 2001:dc3::35#53(m.root-servers.net) in 50 ms
+
+  wikipedia.org.          3600    IN      NS      ns0.wikimedia.org.
+  wikipedia.org.          3600    IN      NS      ns1.wikimedia.org.
+  wikipedia.org.          3600    IN      NS      ns2.wikimedia.org.
+  ...
+  ;; Received 655 bytes from 2001:500:48::1#53(b2.org.afilias-nst.org) in 30 ms
+
+  wikipedia.org.          180     IN      A       185.15.59.224
+  ;; Received 78 bytes from 208.80.154.238#53(ns0.wikimedia.org) in 140 ms
+  ```
