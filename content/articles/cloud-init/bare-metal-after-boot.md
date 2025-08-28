@@ -12,6 +12,13 @@ This article shows how to manually invoke cloud-init on an on-premises machine (
 
 This article is a *starting point*. We'll provide the necessary cloud-init data using a standard HTTP server. You can later add features like HTTPS and dynamic data if needed.
 
+> [!WARNING]
+> Cloud-init usually works, but it can sometimes be tricky and frustrating to use.
+>
+> For example, it may hang or fail to detect the datasource, and troubleshooting these issues - especially when the datasource isn't picked up - can be very difficult.
+>
+> This is likely because cloud-init was not designed to run after the system has already booted. So keep in mind: it may work, or it may not.
+
 ## The Datasource
 
 The **datasource** specifies what cloud-init should do.
@@ -141,14 +148,17 @@ $ curl http://<your-server>:8080/cloud-init/meta-data
 After that, you can invoke cloud-init with the following commands:
 
 ```sh
-$ cloud-init clean --logs --machine-id --seed
-$ cloud-init init
-$ cloud-init modules --mode=config
-$ cloud-init modules --mode=final
-$ touch /etc/cloud/cloud-init.disabled
+$ cloud-init clean --logs --machine-id --seed   # reset cloud-init
+$ /usr/lib/cloud-init/ds-identify --force       # force datasource detection
+$ cloud-init init                               # run stage 'init'
+$ cloud-init modules --mode=config              # run stage 'config'
+$ cloud-init modules --mode=final               # run stage 'final'
+$ touch /etc/cloud/cloud-init.disabled          # disable cloud-init
 ```
 
 The first command (`cloud-init clean`) resets cloud-init so it behaves as if it has never run.
+
+After that, we force cloud-init to [detect the datasource](https://cloudinit.readthedocs.io/en/latest/howto/identify_datasource.html) from the config. This command is sometimes necessary (for unknown reasons).
 
 The next three commands execute the [three cloud-init stages](https://cloudinit.readthedocs.io/en/latest/explanation/boot.html): `init`, `config`, and `final`.
 
@@ -181,3 +191,9 @@ cloud-init status --long
 less /var/log/cloud-init.log
 less /var/log/cloud-init-output.log
 ```
+
+## Full Example
+
+I have created a working example that uses the information of this article. You can find it on GitHub:
+
+<https://github.com/skrysm/cloud-init-onprem-poc>
