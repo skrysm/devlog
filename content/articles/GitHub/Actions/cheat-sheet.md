@@ -43,10 +43,43 @@ runs-on: windows-latest
 runs-on: macos-latest
 ```
 
+> [!TIP]
+> The runners come with all sort of **pre-installed software** like .NET or PowerShell.
+>
+> For the list, see: workflow log → `Set up job` → `Runner Image` → `Included Software`
+
 *See also:*
 
 * [Available Runners](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#choosing-github-hosted-runners)
 * [Overview of GitHub-hosted Runners](https://docs.github.com/en/actions/concepts/runners/github-hosted-runners)
+
+### Run Job even if Needed Job Failed
+
+By default, dependent jobs only run if their dependency jobs were successful.
+
+**Always run:**
+
+```yaml
+jobs:
+  build-and-test:
+    ...
+  test-report:
+    needs: build-and-test
+    if: ${{ !cancelled() }}
+```
+
+**Run if successful or specific step has failed:**
+
+```yaml
+jobs:
+  build-and-test:
+    outputs:
+      run_tests_conclusion: ${{ steps.run_tests.conclusion }}
+    ...
+  test-report:
+    needs: build-and-test
+    if: ${{ !cancelled() && (needs.build-and-test.result == 'success' || needs.build-and-test.outputs.run_tests_conclusion == 'failure') }}
+```
 
 ## Triggers
 
@@ -73,6 +106,16 @@ on:
   workflow_dispatch:
 ```
 
+**Reusable workflows (see [details](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows)):**
+
+```yaml
+on:
+  workflow_call:
+```
+
+> [!TIP]
+> **Don't use the `schedule`** trigger as this will cause the workflow to be disabled after 60 days of inactivity - and afterward the workflow must be **manually reenabled**.
+
 *See also:*
 
 * [All Trigger Events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
@@ -82,7 +125,7 @@ on:
 
 Whether you're notified about all action runs or just failures, is configured in the **[notification settings of your account](https://github.com/settings/notifications) - *not* on the workflow itself**.
 
-## Capture Job Step Output
+## Capture Step Output
 
 Define it via:
 
