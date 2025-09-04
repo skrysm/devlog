@@ -1,5 +1,7 @@
 ---
 title: GitHub Actions Cheat Sheet
+description: Cheat Sheet for GitHub Actions
+date: 2025-09-04
 topics:
 - github
 - github-actions
@@ -10,6 +12,75 @@ topics:
 **Default Environment Variables:** <https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables>
 
 **GitHub Context:** <https://docs.github.com/en/actions/learn-github-actions/contexts#github-context>
+
+## Jobs
+
+Jobs **run in parallel** by default.
+
+**Run sequentially (use `needs`):**
+
+```yaml
+jobs:
+  job1:
+  job2:
+    needs: job1
+  job3:
+    needs: [job1, job2]
+```
+
+*See also:*
+
+* [Jobs Overview](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-jobs)
+* [Workflow Syntax Reference](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobs)
+
+### Job Runners
+
+Defined by `runs-on` in a job:
+
+```yaml
+runs-on: ubuntu-latest
+runs-on: windows-latest
+runs-on: macos-latest
+```
+
+*See also:*
+
+* [Available Runners](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#choosing-github-hosted-runners)
+* [Overview of GitHub-hosted Runners](https://docs.github.com/en/actions/concepts/runners/github-hosted-runners)
+
+## Triggers
+
+**On push to main:**
+
+```yaml
+on:
+  push:
+    branches:
+      - main
+```
+
+**On pull requests:**
+
+```yaml
+on:
+  pull_request:
+```
+
+**Manually (see [details](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)):**
+
+```yaml
+on:
+  workflow_dispatch:
+```
+
+*See also:*
+
+* [All Trigger Events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
+* [Workflow Syntax Reference](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#on)
+
+## Notifications
+
+Whether you're notified about all action runs or just failures, is configured in the **[notification settings of your account](https://github.com/settings/notifications) - *not* on the workflow itself**.
 
 ## Capture Job Step Output
 
