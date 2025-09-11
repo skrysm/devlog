@@ -85,13 +85,13 @@ jobs:
 
       # See: https://github.com/marketplace/actions/setup-node-js-environment
       - name: Setup NodeJS environment
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 'latest'
 
       # See: https://github.com/marketplace/actions/checkout
       - name: Clone Git repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           lfs: true
           submodules: true
@@ -205,7 +205,7 @@ jobs:
 
       # See: https://github.com/marketplace/actions/ftp-deploy
       - name: Deploy site
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@a51268f67f6605236975928ae28b0f7e9971d50a # 4.3.6
         env:
           HAS_ACCESS_TO_SECRETS: ${{ secrets.ftp_username }}
         # Only run this step if the workflow has access to the repository's secret. Only pull requests
