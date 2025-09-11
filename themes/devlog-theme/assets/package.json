@@ -7,10 +7,10 @@
     "@highlightjs/cdn-assets": "^11.11.1",
     "@types/highlightjs": "^9.12.6",
     "jquery": "^3.7.1",
-    "mermaid": "^11.7.0",
+    "mermaid": "^11.11.0",
     "modern-normalize": "^2.0.0"
   },
   "devDependencies": {
-    "@types/jquery": "^3.5.32"
+    "@types/jquery": "^3.5.33"
   }
 }
