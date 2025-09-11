@@ -9,7 +9,7 @@ aliases:
 - /2012/10/net-locking-performance/
 ---
 
-Just a quick overview over the different lock types and their performance in .NET.
+Just a quick overview of the different lock types and their performance in .NET.
 
 For this test, the following method was called as fast as possible for 4 seconds:
 
