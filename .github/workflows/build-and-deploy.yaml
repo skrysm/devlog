@@ -1,22 +1,11 @@
 ﻿#
-# GitHub Actions workflow: Builds the site and uploads it to the target server.
-#
-# For more details on workflows, see README.md.
+# Builds the site and uploads it to the target server.
 #
 # See also: https://gohugo.io/hosting-and-deployment/hosting-on-github/
 #
-
 name: Build and Deploy
 
-# When to run this workflow
-#
-# See: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
-# See: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
-#
-# TIP: Don't use "schedule" triggers as this will cause the workflow to be disabled after 60 days of inactivity
-#   (and afterward the workflow must be manually reenabled).
 on:
-  # Trigger the workflow on push to the main branch (deploy to production).
   push:
     branches:
       - main
@@ -25,17 +14,11 @@ on:
       - preview
   # Trigger the workflow for any pull requests (deploy to preview, if "local" PR; don't deploy if PR from fork).
   pull_request:
-  # Allow manual run of this workflow (https://docs.github.com/en/actions/using-workflows/manually-running-a-workflow)
-  workflow_dispatch:
+  workflow_dispatch:  # manual execution
 
 # Permissions for GITHUB_TOKEN for this workflow.
-#
-# See: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
-#
-# NOTE: Because we run with minimal permissions, we use "@vX" (instead of "@hash") for non-GitHub steps below.
-#   Usually you would use "@hash" as a security measure to pin a specific version. However, since we run with
-#   minimal permissions here, malicious code can't do much harm (most likely). For more details, see:
-#   https://blog.gitguardian.com/github-actions-security-cheat-sheet/#use-specific-action-version-tags
+# NOTES ON PERMISSIONS: https://manski.net/articles/github/actions/cheat-sheet#security-considerations
+# NOTES ON SECRETS: https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets#using-secrets-in-a-workflow
 permissions:
   contents: read
 
@@ -65,16 +48,10 @@ concurrency:
   # Do NOT cancel in-progress runs as we want to allow these deployments to complete.
   cancel-in-progress: false
 
-# NOTE: Jobs run in parallel by default.
-# https://docs.github.com/en/actions/using-jobs/using-jobs-in-a-workflow
+# NOTE: Jobs run in parallel by default (unless "needs" is defined).
 jobs:
   build-and-deploy:
-
-    # Name the job
     name: Build & Deploy
-
-    # Set the type of machine to run on
-    # See: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
     runs-on: ubuntu-latest
 
     env:
