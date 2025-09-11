@@ -63,6 +63,8 @@
 		"MD040": false,
 		// Inconsistent code blocks are sometimes nicer to write
 		"MD046": false,
+		// Missing trailing pipe for table
+		"MD055": false,
 	},
 
 	"files.associations": {
