@@ -33,7 +33,7 @@ env:
   # IMPORTANT: Always USE A PULL REQUEST TO UPDATE THE HUGO VERSION to be able to fix all problems
   #   before pushing the result to production!!!
   #
-  HUGO_VERSION: 0.147.9
+  HUGO_VERSION: 0.150.0
 
   # Set "DEPLOY_STATE" to "production" if this workflow was triggered by a push to the main branch.
   # Set "DEPLOY_STATE" to "preview" in any other case (i.e. pull requests).
