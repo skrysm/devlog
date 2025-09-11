@@ -1,9 +1,9 @@
 #!/usr/bin/env pwsh
 
 Push-Location "$PSScriptRoot/_utils"
-& npm install
+npm install
 Pop-Location
 
 Push-Location "$PSScriptRoot/assets"
-& npm install
+npm install
 Pop-Location
