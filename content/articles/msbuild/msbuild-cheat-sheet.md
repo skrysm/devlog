@@ -1,6 +1,8 @@
 ---
 title: MSBuild and .csproj Cheat Sheet
-date: 2023-05-16
+description: Various bits of information about MSBuild and .csproj files
+date: 2025-10-06
+oldContentWarning: false
 topics:
 - msbuild
 - dotnet
@@ -11,7 +13,7 @@ topics:
 
 Official names: **SDK-style** (modern), **non-SDK-style** (legacy)
 
-Documentation: <https://docs.microsoft.com/en-us/nuget/resources/check-project-format>
+Documentation: <https://learn.microsoft.com/en-us/nuget/resources/check-project-format>
 
 ## Target Framework(s)
 
@@ -31,7 +33,7 @@ Multiple target frameworks (notice the property changes from "TargetFramework" t
 </PropertyGroup>
 ```
 
-Possible target framework names: <https://docs.microsoft.com/en-us/dotnet/standard/frameworks#latest-versions>
+Possible target framework names: <https://learn.microsoft.com/en-us/dotnet/standard/frameworks#latest-versions>
 
 ## Create Link to Multiple Files
 
@@ -85,7 +87,7 @@ or even:
 
 For a full list, see:
 
-* <https://docs.microsoft.com/en-us/visualstudio/msbuild/common-msbuild-project-properties>
+* <https://learn.microsoft.com/en-us/visualstudio/msbuild/common-msbuild-project-properties>
 
 ### General
 
@@ -97,6 +99,11 @@ For a full list, see:
 * `$(TargetName)`: The name of the target file without file extension (and without path).
 * `$(TargetFileName)`: The name of the target file with file extension (but without path).
 
+> [!TIP]
+> The property `$(SolutionDir)` is set to `*Undefined*` nowadays.
+>
+> If you need a global folder, specify it via the `Directory.Build.props` file.
+
 ### For NuGet Packages
 
 * `$(PackageId)`: Name of the NuGet package
@@ -104,7 +111,14 @@ For a full list, see:
 
 ## List All Targets, Properties, And Environment Variables
 
-To list all MSBuild targets, properties, and environment variables for a build, build with logging **Diagnostic** (`/v:d`).
+To list all MSBuild targets, properties, and environment variables for a build, build with logging **Diagnostic** (`/v:diag`).
+
+> [!NOTE]
+> This no longer seems to work in Visual Studio. Instead, you need to go to the command line:
+>
+> ```sh
+> dotnet build -v:diag -tl:off > output.txt
+> ```
 
 *Targets* will be listed in the **Target Performance Summary**:
 
