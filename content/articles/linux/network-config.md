@@ -450,3 +450,6 @@ To get the traditional names back:
    ```sh
    reboot
    ```
+
+> [!NOTE]
+> On a Raspberry Pi (where Grub isn't used), add `net.ifnames=0` to `/boot/firmware/cmdline.txt`.
