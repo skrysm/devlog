@@ -320,7 +320,7 @@ netplan is Ubuntu's solution to have a unified configuration language for both s
 
 **Packages:** `netplan.io`
 
-**Config files:** `/etc/netplan/*.yaml` (not `.yml`!) - [documentation](https://netplan.readthedocs.io/en/stable/netplan-yaml/#)
+**Config files:** `/etc/netplan/*.yaml` (not `.yml`!; [documentation](https://netplan.readthedocs.io/en/stable/netplan-yaml/#)) - `/usr/lib/netplan/*.yaml` on Raspberry Pi OS
 
 **Wi-Fi password stored in:** `/etc/netplan/*.yaml`
 
@@ -335,6 +335,11 @@ netplan is Ubuntu's solution to have a unified configuration language for both s
 
 > [!WARNING]
 > To use **Wi-Fi with systemd**, you need to have the `wpasupplicant` packaged installed. netplan doesn't support `iwd` with systemd.
+
+> [!WARNING]
+> Raspberry Pi OS [adopted netplan with version 13](https://www.raspberrypi.com/news/cloud-init-on-raspberry-pi-os/). However, the devs decided to enable a sync between NetworkManager and netplan - which means **the `/etc/netplan` directory is wiped** every time netplan runs.
+>
+> If you don't want netplan to rewrite your config, you need to put it in `/usr/lib/netplan` instead.
 
 ### Renderers
 
