@@ -1,12 +1,23 @@
 # Upgrading Dependencies
 
 1. Upgrade nodejs on your dev machine
-1. Upgrade npm on your dev machine (<https://docs.npmjs.com/try-the-latest-stable-version-of-npm>): \
-   `npm install -g npm@latest`
-1. Create git branch: \
-   `git switch -c feature/upgrade-dependencies`
-1. Run: \
-   `themes/devlog-theme/npm-update.ps1`
+1. Upgrade npm on your dev machine (<https://docs.npmjs.com/try-the-latest-stable-version-of-npm>):
+
+   ```sh
+   npm install -g npm@latest
+   ```
+
+1. Create git branch:
+
+   ```sh
+   git switch -c feature/upgrade-dependencies
+   ```
+
+1. Run:
+
+   ```sh
+   themes/devlog-theme/npm-update.ps1
+   ```
 
    (or `themes/devlog-theme/npm-init.ps1` on a fresh clone)
 1. Update `HUGO_VERSION` variable in `.github/workflows/build-and-deploy.yaml`
