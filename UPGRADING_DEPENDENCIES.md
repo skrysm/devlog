@@ -1,6 +1,11 @@
 # Upgrading Dependencies
 
-1. Upgrade nodejs on your dev machine
+1. Upgrade nodejs on your dev machine:
+
+   ```sh
+   choco upgrade nodejs
+   ```
+
 1. Upgrade npm on your dev machine (<https://docs.npmjs.com/try-the-latest-stable-version-of-npm>):
 
    ```sh
