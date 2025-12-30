@@ -8,6 +8,13 @@ topics:
 ```sh
 #!/usr/bin/env bash
 
+#
+# General notes:
+#
+# * $(...) removes all trailing line breaks.
+# * $SECONDS is a special shell variable that contains the seconds since the shell has started.
+#
+
 # Exit immediately if any command exits with non-zero status
 set -e
 # Exit if an undefined variable is used
