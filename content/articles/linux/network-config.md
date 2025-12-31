@@ -26,6 +26,9 @@ For each, this article shows how to:
 As a bonus, this article also shows how to get back the old `eth0` etc. network device names.
 
 > [!TIP]
+> I've created a bash script that switches a Debian-based system to systemd and iwd: <https://github.com/skrysm/systemd-networkd-init>
+
+> [!TIP]
 > To check if a command is available on your machine, use `which`:
 >
 > ```sh
