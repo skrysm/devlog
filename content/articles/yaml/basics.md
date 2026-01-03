@@ -1,6 +1,7 @@
 ---
 title: YAML Basics (for people how know JSON)
-date: 2018-12-28
+date: 2026-01-03
+oldContentWarning: false
 topics:
 - yaml
 ---
@@ -141,4 +142,57 @@ Sammy Sosa completed another fine season with great stats.
     0.288 Batting Average
 
 What a year!
+```
+
+### Trim and Extra
+
+YAML also supports trimming and keeping extra **final newlines**:
+
+| Notation | Meaning | Example
+| --- | --- | ---
+| `>`, `\|` | Preserve final newline | `"a text\n"`
+| `>-`, `\|-` | Trim final newline | `"a text"`
+| `>+`, `\|+` | Keep all final newlines | `"a text\n\n\n"`
+
+**Example YAML:**
+
+```yaml
+fold_keep: >
+  a
+  b
+
+fold_strip: >-
+  a
+  b
+
+fold_extra: >+
+  a
+  b
+
+
+lit_keep: |
+  a
+  b
+
+lit_strip: |-
+  a
+  b
+
+lit_extra: |+
+  a
+  b
+
+
+# End comment
+```
+
+**Test with `yq`:**
+
+```sh
+yq '.fold_keep' test.yaml   # "a b\n"
+yq '.fold_strip' test.yaml  # "a b"
+yq '.fold_extra' test.yaml  # "a b\n\n\n"
+yq '.lit_keep' test.yaml    # "a\nb\n"
+yq '.lit_strip' test.yaml   # "a\nb"
+yq '.lit_extra' test.yaml   # "a\nb\n\n\n"
 ```
