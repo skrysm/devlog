@@ -10,13 +10,23 @@ The output of `dig` (Domain Information Groper) can appear cryptic if you're not
 
 ## Installation
 
-On **Debian/Ubuntu**, install the `dnsutils` package to get the `dig` command.
+### Debian/Ubuntu
 
-On **Windows**, you can download `dig` as part of the bind9 package:
+Install the `dnsutils` package:
+
+```sh
+apt install dnsutils
+```
+
+### Windows
+
+On Windows, you can download `dig` as part of the bind9 package:
 
 <https://ftp.isc.org/isc/bind9/9.17.15/BIND9.17.15.x64.zip>
 
 Note, however, that the bind9 project [dropped Windows support](https://ftp.isc.org/isc/bind9/9.17.16/doc/arm/html/notes.html#removed-features) with version 9.17.16.
+
+Alternatively, you can run `dig` through [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl/about).
 
 ## Example Output
 
@@ -138,40 +148,71 @@ Each section lists its [resource records](resource-records.md) in a readable for
 
 ## Useful Options {#options}
 
-There are a few useful options:
+There are a few useful options.
 
-* `+short` - only prints the IP address:
+### +short
 
-  ```sh
-  $ dig wikipedia.org +short
-  185.15.59.224
-  ```
+`+short` - prints only the IP address:
 
-* `+trace` - show exactly how responded with what:
+```sh
+$ dig wikipedia.org +short
+185.15.59.224
+```
 
-  ```sh
-  $ dig wikipedia.org +trace
+### +trace
 
-  ; <<>> DiG 9.18.33-1~deb12u2-Raspbian <<>> wikipedia.org +trace
-  ;; global options: +cmd
-  .                       41959   IN      NS      m.root-servers.net.
-  .                       41959   IN      NS      d.root-servers.net.
-  .                       41959   IN      NS      f.root-servers.net.
-  ...
-  ;; Received 1097 bytes from 192.168.0.1#53(192.168.0.1) in 20 ms
+`+trace` - shows exactly who responded with what.
 
-  org.                    172800  IN      NS      d0.org.afilias-nst.org.
-  org.                    172800  IN      NS      b0.org.afilias-nst.org.
-  org.                    172800  IN      NS      b2.org.afilias-nst.org.
-  ...
-  ;; Received 782 bytes from 2001:dc3::35#53(m.root-servers.net) in 50 ms
+Each query/response ends with `;; Received xxx bytes from ...`.
 
-  wikipedia.org.          3600    IN      NS      ns0.wikimedia.org.
-  wikipedia.org.          3600    IN      NS      ns1.wikimedia.org.
-  wikipedia.org.          3600    IN      NS      ns2.wikimedia.org.
-  ...
-  ;; Received 655 bytes from 2001:500:48::1#53(b2.org.afilias-nst.org) in 30 ms
+```sh {lineNos=false,hl_lines="9 15 21 24"}
+$ dig wikipedia.org +trace
 
-  wikipedia.org.          180     IN      A       185.15.59.224
-  ;; Received 78 bytes from 208.80.154.238#53(ns0.wikimedia.org) in 140 ms
-  ```
+; <<>> DiG 9.18.33-1~deb12u2-Raspbian <<>> wikipedia.org +trace
+;; global options: +cmd
+.                       41959   IN      NS      m.root-servers.net.
+.                       41959   IN      NS      d.root-servers.net.
+.                       41959   IN      NS      f.root-servers.net.
+...
+;; Received 1097 bytes from 192.168.0.1#53(192.168.0.1) in 20 ms
+
+org.                    172800  IN      NS      d0.org.afilias-nst.org.
+org.                    172800  IN      NS      b0.org.afilias-nst.org.
+org.                    172800  IN      NS      b2.org.afilias-nst.org.
+...
+;; Received 782 bytes from 2001:dc3::35#53(m.root-servers.net) in 50 ms
+
+wikipedia.org.          3600    IN      NS      ns0.wikimedia.org.
+wikipedia.org.          3600    IN      NS      ns1.wikimedia.org.
+wikipedia.org.          3600    IN      NS      ns2.wikimedia.org.
+...
+;; Received 655 bytes from 2001:500:48::1#53(b2.org.afilias-nst.org) in 30 ms
+
+wikipedia.org.          180     IN      A       185.15.59.224
+;; Received 78 bytes from 208.80.154.238#53(ns0.wikimedia.org) in 140 ms
+```
+
+> [!TIP]
+> You can shorten the output with:
+>
+> ```sh
+> dig +trace +noall +answer ...
+> ```
+
+## Error: UDP setup failed: network unreachable
+
+**If you get:**
+
+```
+;; UDP setup with <IPv6 Address>#53 ... failed: network unreachable.
+```
+
+This means that IPv6 doesn't work on your system.
+
+**To get rid of these errors:**
+
+```sh
+dig -4 ...
+```
+
+This limits `dig` to IPv4.
