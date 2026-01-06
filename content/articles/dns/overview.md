@@ -6,7 +6,7 @@ topics:
 date: 2025-08-16
 ---
 
-The Domain Name System (DNS) is often described as the "phonebook of the internet", translating human-friendly domain names into machine-readable IP addresses.
+The Domain Name System (DNS) is often described as the "phonebook of the Internet", translating human-friendly domain names into machine-readable IP addresses.
 
 This article explains how DNS works in practice.
 
@@ -28,7 +28,7 @@ The response can be one of three types:
 
 For the difference between "authoritative answer" and "referral", see [](#dns-resolving) below.
 
-The DNS protocol uses both UDP and TCP on port 53. DNS clients first try to use UDP but fall back to TCP if the response is too big.
+The DNS protocol uses both UDP and TCP on port 53. DNS clients first try to use UDP but fall back to TCP if the response is too large.
 
 ## Walking the DNS Hierarchy {#dns-resolving}
 
@@ -63,7 +63,7 @@ It uses the *"root hints file"* (usually built into recursive resolvers). This f
 
 There are 13 root servers (`a.root-servers.net` to `m.root-servers.net`). Each address is actually an [**anycast address**](https://en.wikipedia.org/wiki/Anycast), meaning there are dozens of servers behind each IP address.
 
-Since these IP addresses are critical for the Internet, they **change very rarely**, and changes are communicated months in advance. Even when they do change, recursive resolvers use "priming" to obtain an up-to-date list of all root server addresses.
+Since these IP addresses are critical for the Internet, they **rarely change**, and changes are communicated months in advance. Even when they do change, recursive resolvers use "priming" to obtain an up-to-date list of all root server addresses.
 
 Recursive resolvers often keep statistics about which root server has the best response time and select faster servers over slower ones.
 
@@ -162,7 +162,7 @@ When resolving `example.com` on a home network:
 
 ## DNS Zones
 
-A DNS zone is basically the **list of all [DNS resource records](resource-records.md)** that belong to a certain domain (or subdomain).
+A DNS zone is the **list of all [DNS resource records](resource-records.md)** that belong to a certain domain (or subdomain).
 
 A DNS zone may include child zones for one or more of its subdomains, but this is not required. The contents of a child zone do *not* count toward the parent zone; they're considered separate zones.
 
@@ -190,7 +190,7 @@ When zone administrators want to update the DNS zone (e.g., add or change a reso
 
 The secondary DNS servers find their primary by looking at the `SOA` resource record of the DNS zone. The first field in the resource data identifies the name of the primary DNS server.
 
-Secondary DNS servers then get their copy of the DNS zone via a "regular" DNS resource request:
+Secondary DNS servers then get their copy of the DNS zone via a "regular" DNS request for resource records:
 
 * **`AXFR` (Authoritative Transfer)** → This is a **full zone transfer**. \
   The secondary asks the primary for an `AXFR` record type, and the primary replies with the complete set of resource records for the zone.
@@ -245,12 +245,12 @@ When a child zone is defined:
 * Queries for `something.xyz.example.com` will be referred to the nameservers listed in the NS records.
 * The child zone will have its own zone file and SOA record on the other DNS server.
 
-For child zones there is also the distinction of **in-bailiwick** and **out-of-bailiwick** child zones (see [below](#bailiwick) for details on this word):
+For child zones, there is also a distinction between **in-bailiwick** and **out-of-bailiwick** child zones (see [below](#bailiwick) for details on this word):
 
 * **in-bailiwick** - The nameservers of the child zone are *inside* the parent domain. In this case, A/AAAA records for these nameservers must be provided in the parent zone (because NS records only map to domain names, not IP addresses). These A/AAAA records are called **glue records**.
 * **out-of-bailiwick** - The nameservers of the child zone are *outside* the parent domain. No glue records are required/allowed.
 
-When a recursive resolver ask the nameserver of the parent zone for a record of one of its child zone, the nameserver of the parent zone returns the NS records (and glue records) for that child zone. This response is called **referral** and the process of defining child zones is called **delegation**.
+When a recursive resolver asks the nameserver of the parent zone for a record in one of its child zones, the nameserver of the parent zone returns the NS records (and glue records) for that child zone. This response is called a **referral**, and the process of defining child zones is called **delegation**.
 
 ### Bailiwick {#bailiwick}
 
@@ -265,7 +265,7 @@ For example, both `www.wikipedia.org` and `example.org` are **in-bailiwick** of 
 The term "bailiwick" is used in two places:
 
 * **Child zones** - The nameservers of child zones can be in-bailiwick or out-of-bailiwick.
-* **Bailiwick checking** - A security measure: authoritative nameservers are only allowed return in-bailiwick records ([more details](https://textbook.cs161.org/network/dns.html#325-dns-security-bailiwick)).
+* **Bailiwick checking** - A security measure: authoritative nameservers are only allowed to return in-bailiwick records ([more details](https://textbook.cs161.org/network/dns.html#325-dns-security-bailiwick)).
 
 ## Negative Caching {#negative-caching}
 

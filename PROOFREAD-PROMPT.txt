@@ -1,10 +1,11 @@
-Please proofread the attached article.
-The target audience is mid-level software developers.
-Check for spelling, grammar, clarity, conciseness, and overall readability, making sure explanations are suitable for readers with some professional experience but not necessarily advanced expertise.
-Verify any factual statements, statistics, or technical claims, and flag anything that may be inaccurate or needs citation.
-Suggest improvements for structure or formatting if needed.
-Please apply the changes directly to the document.
-Please don't add unnecessary new blank lines and keep numbered lists as "1." for every item.
-Keep contractions.
-Please don't shorten " - " within sentences.
-Please also fact-check the article but only mention facts that are wrong. Do not mention facts that are correct.
+Proof-read this file.
+
+Audience: mid-level software developers.
+
+Goals:
+1. Fix spelling/grammar - use US English; improve clarity and conciseness; keep the author's voice and intent.
+2. Preserve Markdown formatting; avoid extra blank lines; keep numbered lists as "1."; keep " - " spacing inside sentences; don't replace "-" with "—"; never change the text inside "[]" for Markdown links.
+3. Leave code blocks/commands/config untouched unless incorrect; keep contractions.
+4. Fact-check: only flag statements that look wrong or need a citation - don't list correct facts.
+
+Output: Apply edits directly.
