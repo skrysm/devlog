@@ -50,6 +50,28 @@ At each step, the resolver asks the DNS server for the requested record (e.g., t
 > [!NOTE]
 > The `.org` DNS server only knows which DNS server is responsible for `wikipedia.org` (the `NS` record). It does not know the actual IP address of `wikipedia.org` (the `A` or `AAAA` record). To get the IP address, you must ask the DNS server for `wikipedia.org` itself. (This is because `wikipedia.org` is a [child zone](#child-zones) of `.org`, and so `.org` is not "authoritative" for `wikipedia.org`.)
 
+### Reverse Lookup
+
+DNS also supports a reverse lookup, i.e., looking up domain names for an IP address.
+
+To do a reverse lookup, the IP address is first converted into a [special DNS name](resource-records.md#ip-address-records). Then it goes through a regular lookup (for a `PTR` record).
+
+For example, to do a reverse lookup for `1.1.1.1` (which maps to [one.one.one.one](https://one.one.one.one)):
+
+1. DNS resolver → root DNS server: "Give me the domain names for `1.1.1.1`."
+1. DNS resolver ← root DNS server: "I don't know the IP address but the DNS server of `1.x.x.x` might know." (referral)
+1. DNS resolver → `1.x.x.x` DNS server: "Give me the domain names for `1.1.1.1`."
+1. DNS resolver ← `1.x.x.x` DNS server: "I don't know the IP address but the DNS server of `1.1.1.x` might know." (referral)
+1. DNS resolver → `1.1.1.x` DNS server: "Give me the domain names for `1.1.1.1`."
+1. DNS resolver ← `1.1.1.x` DNS server: "I know it. Here are the domain names." (authoritative answer)
+
+> [!NOTE]
+> Forward DNS (name → IP) is managed by the domain owner.
+>
+> Reverse DNS (IP → name) is managed by whoever controls the IP block (ISP, cloud provider, enterprise network).
+>
+> The coordination between forward DNS and reverse DNS creates significant overhead. Also, there is no global requirement that every IP must have a `PTR` record. As a result, providers often don't bother setting them up.
+
 ## The Root Domain {#root-domain}
 
 The **root domain** is the top of the DNS hierarchy, represented by a single dot (`.`). Every fully qualified domain name (FQDN) technically ends with this dot, even though it's usually omitted (e.g., `wikipedia.org.`).

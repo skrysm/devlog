@@ -146,6 +146,16 @@ Each section lists its [resource records](resource-records.md) in a readable for
 * **WHEN:** Date and time of the query.
 * **MSG SIZE rcvd:** Size of the reply in bytes.
 
+## Reverse Lookup
+
+To do a reverse lookup (i.e., find the domain names for an IP address):
+
+```sh
+dig -x <ip-address>
+```
+
+This queries for a [PTR record](resource-records.md).
+
 ## Useful Options {#options}
 
 There are a few useful options.

@@ -18,13 +18,13 @@ wikipedia.org.          13      IN      A       185.15.59.224
 
 A resource record consists of the following fields, in order:
 
-| Name       | Meaning      | Here
-| ---------- | ------------ | ----------
-| **NAME**   | Domain name  | `wikipedia.org.`
-| **TTL**    | Time to live (in seconds); specifies how long a DNS client should cache this record before querying the server again. | `13`
-| **CLASS**  | Group/Namespace of the *record type*; usually `IN` (Internet). Other classes exist but are rare. | `IN`
-| **TYPE**   | Record type (e.g., `A` for IPv4 address, `AAAA` for IPv6 address, `MX` for mail server) | `A`
-| **RDATA**  | Type-specific data (e.g., an IPv4 address for `A`, mail server name for `MX`). Can be more than one value. | `185.15.59.224`
+| Name       | Meaning                                                                                                                  | Here
+| ---------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------
+| **NAME**   | Domain name (or sometimes [IP addresses](#ip-address-records))                                                           | `wikipedia.org.`
+| **TTL**    | Time to live (in seconds); specifies how long a DNS client should cache this record before querying the server again.    | `13`
+| **CLASS**  | Group/Namespace of the *record type*; usually `IN` (Internet). Other classes exist but are rare.                         | `IN`
+| **TYPE**   | Record type (e.g., `A` for IPv4 address, `AAAA` for IPv6 address, `MX` for mail server)                                  | `A`
+| **RDATA**  | Type-specific data (e.g., an IPv4 address for `A`, mail server name for `MX`). Can be more than one value.               | `185.15.59.224`
 
 > [!NOTE]
 > The **record name** `wikipedia.org.` ends with a dot (`.`), which represents the **root domain** (above `.com`, `.net`, etc.). See [DNS resolving](overview.md#root-domain) for details.
@@ -40,6 +40,7 @@ The `IN` resource class [defines many record types](https://en.wikipedia.org/wik
 | `A`               | Maps a DNS name to an IPv4 address
 | `AAAA`            | Maps a DNS name to an IPv6 address
 | `CNAME`           | Maps a DNS name to another DNS name (alias)
+| `PTR`             | Maps an [IP address](#ip-address-records) to a DNS name (for DNS reverse lookup)
 | `MX`              | Specifies the SMTP server for a domain or subdomain
 | `TXT`             | Stores free-form text for a DNS name; used for things like the [ACME DNS01 challenge](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge)
 | `SOA`             | "Start of authority"; contains administrative info about a [DNS zone](overview.md#dns-zones). Each zone must have one.
@@ -55,3 +56,38 @@ The **TTL** field specifies how many seconds a DNS client should cache this reco
 When you get a resource record directly from an [authoritative DNS server](overview.md#authoritative-servers), its TTL has the original value.
 
 On the other hand, when you get a resource record from a cache (for example, from a recursive resolver or stub resolver), the TTL value will be reduced by the number of seconds the record has been in the cache.
+
+## IP Address Records {#ip-address-records}
+
+DNS uses `PTR` records to enable **DNS reverse lookup**, i.e., resolving IP addresses to their domain names:
+
+```zone
+10.113.0.203.in-addr.arpa.   IN   PTR   mail.example.com.
+```
+
+Here, the IP address is specified in the `NAME` (first) column: `10.113.0.203.in-addr.arpa.`
+
+**IPv4 addresses** are defined with the `.in-addr.arpa.` suffix:
+
+```
+<inverse-order>.in-addr.arpa.
+```
+
+For example, the IP address `203.0.113.10` is written as: `10.113.0.203.in-addr.arpa.` - note how the **number groups are reversed** (i.e. `10` comes first).
+
+**IPv6 addresses** are defined with the `.ip6.arpa.` suffix:
+
+```
+<inverse-order>.ip6.arpa.
+```
+
+For example, the IPv6 address `2001:db8::567:89ab` is written as: `b.a.9.8.7.6.5.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa.`
+
+> [!TIP]
+> You may see zone file entries like this:
+>
+> ```zone
+> 1.0.0   IN   PTR   localhost.
+> ```
+>
+> Note that `1.0.0` does *not* end with a dot (`.`) - meaning it's relative to the zone origin - which in this example is `127.in-addr.arpa`. So, the full name would be `1.0.0.127.in-addr.arpa`.
