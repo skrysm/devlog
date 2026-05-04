@@ -31,6 +31,12 @@ YAML has some bells and whistles that JSON documents don't have. The most import
 - Ken Griffey
 ```
 
+or:
+
+```yaml
+[ "Mark McGwire", "Sammy Sosa", "Ken Griffey" ]
+```
+
 JSON equivalent:
 
 ```json
@@ -111,6 +117,8 @@ becomes:
 
 In **folded** style (`>`), newlines are replaced with spaces - unless it ends an empty or a more-indented line.
 
+**Example - single line:**
+
 ```yaml
 description: >
   Mark McGwire's
@@ -121,6 +129,17 @@ description: >
 becomes:
 
     Mark McGwire's year was crippled by a knee injury.
+
+> [!TIP]
+> You get the same output with:
+>
+> ```yaml
+> description: Mark McGwire's
+>   year was crippled
+>   by a knee injury.
+> ```
+
+**Example - multiple blocks:**
 
 ```yaml
 description: >
